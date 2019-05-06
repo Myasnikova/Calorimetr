@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<form action="{% url 'add' eating_id %}" method="post">
+{% csrf_token %}
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-12 col-lg-6 bg-light rounded border pb-3 mt-3">
+<ul class="list-group form-check">
+  <div class="row">
+  <div class="col-sm-6 col-lg-6 display-4 text-left mb-3">Продукты</div>
+  <div class="col-sm-6 col-lg-6 mt-4 text-right"><button type="submit" class="btn btn-primary mr-3 border-light" style="background-color:#ff9400">Добавить</button></div>
+  </div>
+  {% for dish in dish_list %}
+  <li class="list-group-item ">
+    <div class="row">
+    <div class="col-sm-9 col-lg-9 text-left">
+    <input class = "ml-3 " type="checkbox" class="form-check-input" id="dish{{dish.id}}" name="dishes" value="{{forloop.counter}}-{{dish.id}}">
+    <label class ="ml-2" for="dish{{dish.id}}">{{ dish.name }}</label>
+    <p>Порция:</p>
+    <input class = "ml-3 " type="text" name="portions" value="0">
+
+    </div>
+  <div class="col-sm-3 col-lg-3 dropdown show text-right"><a class="btn btn-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Белки:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.protein}}</div></div></div>
+      <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Жиры:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.fat}}</div></div></div>
+      <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Углеводы:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.carbohydrates}}</div></div></div>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Калории:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.calorie}}</div></div></div>
+  </div>
+  </div>
+  </div>
+  </li>
+  {% endfor %}
+</ul>
+</div>
+</div>
+</div>
+</form>

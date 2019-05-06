@@ -1,0 +1,36 @@
+{% extends "calorimetr/base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Имя пользователя не существует, попробуйте другое</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Ваш аккаунт не имеет доступ к странице</p>
+    {% else %}
+    <p>Авторизуйтесь для того чтобы увидеть страницу</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+<div class="form-group">
+  <div class="display-4" style ="font-size: 1.5rem">{{ form.username.label_tag }}</div>
+  <div>{{ form.username }}</div>
+</div>
+<div class="form-group">
+  <div class="display-4" style ="font-size: 1.5rem">{{ form.password.label_tag }}</div>
+  <div>{{ form.password }}</div>
+</div>
+
+<div>
+  <input class="btn btn-primary border-0 mt-3" type="submit" value="Войти" style ="background-color: #ff9400"/>
+  <input type="hidden" name="next" value="{{ next }}" />
+</div>
+</form>
+<div><a href="{% url 'signup' %}">Создать аккаунт</a></div>
+
+{% endblock %}

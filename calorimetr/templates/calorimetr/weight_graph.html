@@ -1,0 +1,86 @@
+<!doctype html>
+{% extends "calorimetr/base.html" %}
+{% load staticfiles %}
+{% block link %}
+    <link type="text/css" rel="StyleSheet" href="http://bootstraptema.ru/plugins/2016/shieldui/style.css" />
+    <script src="http://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+    <script src="http://bootstraptema.ru/plugins/2016/shieldui/script.js"></script>
+{% endblock%}
+{% block content_header %}Веса{% endblock %}
+{% block content_description %}наблюдайте за динамикой изменения веса{% endblock %}
+{% block content %}
+<form action="{% url 'weight' %}" method="post">
+  {% csrf_token %}
+  <div class="container-fluid">
+      <div class="row">
+  <div class="form-group col-sm-9 col-lg-3 mt-2 pr-0">
+    <label for="wish_weight_id" class="display-4" style="font-size:200%;">Желаемый вес</label>
+    <input type="text" class="form-control" name="wish_weight" id="wish_weight_id" placeholder="Введите вес" value="{{current_user_profile.wish_weight}}">
+  </div>
+<div class="col-sm-2 col-lg-3 ml-1 mt-5 pl-0">
+  <button type="submit" class="btn" name="wish_weight_edit" style="background-color: #ffe0b2"><img src="{% static 'calorimetr/image/Edit.png' %}"  class="img-fluid" style="width:20px;height:20px"></button>
+</div>
+</div>
+<div class="row">
+  <div class="form-group col-sm-9 col-lg-3 pr-0 mt-2">
+    <label for="weight_id" class="display-4" style="font-size:200%;">Текущий вес</label>
+    <input type="text" class="form-control" name="weight" id="weight_id" placeholder="Введите вес" value="{{current_user_profile.weight}}">
+  </div>
+  <div class="col-sm-2 col-lg-3 mt-5 ml-1 pl-0">
+    <button type="submit" class="btn" name="curr_weight_edit" style="background-color: #ffe0b2" ><img src="{% static 'calorimetr/image/Edit.png' %}"  class="img-fluid" style="width:20px;height:20px"></button>
+  </div>
+  </div>
+  </div>
+</form>
+<div id="chart"></div>
+<script>
+var date_list = [];
+var year_list = {{weight_list_year}};
+var month_list = {{weight_list_month}};
+var day_list = {{weight_list_day}};
+year_list.forEach(function(item, i, year_list) {
+  date_list.push( day_list[i] + "." + month_list[i] + "." + item);
+});
+var weight_list = {{weight_list_weight}};
+ $(function () {
+ $("#chart").shieldChart({
+ theme: "light",
+ seriesSettings: {
+ line: {
+ dataPointText: {
+ enabled: true
+ }
+ }
+ },
+ chartLegend: {
+ align: 'center',
+ borderRadius: 2,
+ borderWidth: 2,
+ verticalAlign: 'top'
+ },
+ exportOptions: {
+ image: true,
+ print: true
+ },
+ axisX: {
+ categoricalValues: date_list
+ },
+ axisY: {
+ title: {
+ text: "Вес (кг)"
+ }
+ },
+ primaryHeader: {
+ text: "Динамика веса"
+ },
+ dataSeries: [{
+ seriesType: 'line',
+ collectionAlias: 'Вес',
+ data: weight_list
+ }]
+ });
+ });
+ </script><!-- /.График -->
+
+</div>
+{% endblock %}

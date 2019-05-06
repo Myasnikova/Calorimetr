@@ -1,0 +1,14 @@
+{% extends "calorimetr/base.html" %}
+{% load staticfiles %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<form action="{% url 'search' eating_id %}" class="navbar-form navbar-left" method="get">
+    <div class="input-group">
+        <input id="search" name="q" type="text" class="form-control" placeholder="Поиск" data-live-search="true">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-default" style="background-color : #ff9400;"><img src="{% static 'calorimetr/image/Search.png' %}"></button>
+        </span>
+    </div>
+</form>
+{% include "calorimetr/search_template.html" %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "calorimetr/base.html" %}
+{% load staticfiles %}
+{% block title %}Diary{% endblock %}
+{% block content_header %}Расчет РСК{% endblock %}
+{% block content_description %}введите параметры и расчитайте суточную норму калорий{% endblock %}
+{% block content %}
+<form action="{% url 'rsk' %}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="weight_id" class="display-4" style ="font-size: 1.5rem">Текущий вес</label>
+    <input type="text" class="form-control" name="weight" id="weight_id" placeholder="Введите вес" value="{{current_user.weight}}">
+  </div>
+  <div class="form-group">
+    <label for="wish_weight_id" class="display-4" style ="font-size: 1.5rem">Желаемый вес</label>
+    <input type="text" name="wish_weight" class="form-control" id="wish_weight_id" placeholder="Введите желаемый вес" value="{{current_user.wish_weight}}">
+  </div>
+  <div class="form-group">
+    <label for="height_id" class="display-4" style ="font-size: 1.5rem">Рост</label>
+    <input type="text" name="height" class="form-control" id="height_id" placeholder="Введите рост" value="{{current_user.height}}">
+  </div>
+  <div class="form-group">
+    <label for="age_id" class="display-4" style ="font-size: 1.5rem">Возраст</label>
+    <input type="text" name="age" class="form-control" id="age_id" placeholder="Введите возраст" value="{{current_user.age}}">
+  </div>
+  <div class="form-group">
+    <label for="sex_id" class="display-4" style ="font-size: 1.5rem">Пол</label>
+    <select class="form-control" name="sex" id="sex_id">
+      <option selected hidden>{{current_user.get_sex_display}}</option>
+      <option>Женский</option>
+      <option>Мужской</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="activity_id" class="display-4" style ="font-size: 1.5rem">Уровень активности</label>
+    <select class="form-control" name="activity" id="activity_id">
+      <option selected hidden>{{current_user.get_activity_display}}</option>
+      <option>Минимальная активность</option>
+      <option>Слабая активность</option>
+      <option>Средняя активность</option>
+      <option>Высокая активность</option>
+      <option>Экстра-активность</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="diet_id" class="display-4" style ="font-size: 1.5rem">Тип диеты</label>
+    <select class="form-control" name="diet" id="diet_id">
+      <option selected hidden>{{current_user.get_diet_display}}</option>
+      <option>Потеря веса</option>
+      <option>Поддержание веса</option>
+      <option>Набор веса</option>
+    </select>
+  </div>
+  <div class="display-4"><span class="mr-2">РСК:</span> <span>{{current_user.get_rsk}}</span></div>
+
+  <button type="submit" class="btn btn-primary border-0 mt-3" name="submit" style ="background-color: #ff9400">Рассчитать</button>
+</form>
+
+{% endblock %}

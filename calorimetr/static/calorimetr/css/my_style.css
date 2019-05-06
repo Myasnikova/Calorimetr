@@ -1,0 +1,49 @@
+@media (min-width: 768px) {
+            .navbar-container {
+                position: sticky;
+                top: 0;
+                overflow-y: auto;
+                height: 100vh;
+            }
+
+            .navbar-container .navbar {
+                align-items: flex-start;
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .navbar-container .navbar-collapse {
+                align-items: flex-start;
+            }
+
+            .navbar-container .nav {
+                flex-direction: column;
+                flex-wrap: nowrap;
+            }
+
+            .navbar-container .navbar-nav {
+                flex-direction: column !important;
+            }
+        }
+img {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
+img#cal{
+  width: 50px;
+  height: 50px;
+}
+div#cal{
+  background-color: #ff9400;
+  padding-left: 0px;
+	padding-right: 0px;
+	width: 100%;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 100%;
+  color: blue;
+}

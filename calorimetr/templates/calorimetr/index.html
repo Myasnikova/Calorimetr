@@ -1,0 +1,94 @@
+{% extends "calorimetr/base.html" %}
+{% load staticfiles %}
+{% block title %}Diary{% endblock %}
+{% block style %}
+
+.list-rectangle {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.list-rectangle>li {
+  position: relative;
+  display: block;
+  margin-bottom: .25rem;
+  padding: .325rem .825rem .325rem 1.325rem;
+  color: #fff;
+  background: #C2185B;
+}
+.list-rectangle>li:last-child {
+  margin-bottom: 0;
+}
+.list-rectangle>li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.5rem;
+  background: #ec407a;
+}
+{% endblock %}
+{% block content_header %}Дневник питания{% endblock %}
+{% block content_description %}добавьте новые блюда в свой рацион{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <form action="{% url 'diary' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group display-4" style ="font-size: 1.5rem">
+      <label for="eating_id" >Прием пищи</label>
+      <input type="text" class="form-control" name="eating" id="eating_id" placeholder="Введите название">
+    </div>
+    <button type="submit" class="btn btn-primary border-0" name="submit" style ="background-color: #ff9400">Создать</button>
+    </form>
+    <div class="row">
+      {% if latest_eating_list %}
+        {% for eating in latest_eating_list %}
+
+            <div class="col-sm-12 col-lg-12 mt-3 pt-3 pb-3 pr-3 pl-3 rounded border border list-group bg-light">
+              <form action="{% url 'diary' %}" method="post">
+                {% csrf_token %}
+
+              <div class="row mb-3"><div class ="display-4 col-sm-6 col-lg-6" style ="font-size: 1.5rem">{{ eating.name }}</div><div class ="display-4 col-sm-3 col-lg-3" style ="font-size: 1.5rem">{{ eating.get_calorie }}</div>
+
+              <div class="col-sm-2 col-lg-2"><a href="{% url 'search' eating.id %}"><img src="{% static 'calorimetr/image/Plus.png' %}"  class="img-fluid" ></a></div>
+              <div class="col-sm-2 col-lg-2 mt-2"><button type="submit" class="btn btn-primary border-0" name="delete_eating" style ="background-color: #ff9400" value={{eating.id}}>Удалить</button></div>
+            </div>
+
+            <form action="{% url 'delete' eating.id %}" id="form{{eating.id}}" method="post">
+            {% csrf_token %}
+            {% for dish in eating.dish_set.all %}
+
+            <div class="list-group-item">
+            <div class="row">
+              <div class="col-sm-2 col-lg-2"><button class="btn btn-white mr-2 img-fluid float-left" type="submit" name="del_dishes" value={{dish.id}}><img src="{% static 'calorimetr/image/Delete.png' %}" style = "width: 20px; height: 20px"></button></div>
+              <div class="col-sm-6 col-lg-6  mt-2">{{dish.name}}</div>
+              <div class="col-sm-2 col-lg-2  mt-2">{{dish.calorie}}</div>
+              <div class="col-sm-2 col-lg-2 dropdown show"><a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left ml-0">Порция:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.portion}}</div></div></div>
+                  <div class="dropdown-divider"></div>
+                  <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Белки:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.protein}}</div></div></div>
+                  <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Жиры:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.fat}}</div></div></div>
+                  <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Углеводы:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.carbohydrates}}</div></div></div>
+                  <div class="dropdown-divider"></div>
+                  <div class="dropdown-item container-fluid"><div class="row"><div class="col-sm-6 col-lg-6 text-left">Калории:</div><div class="col-sm-6 col-lg-6 text-right">{{dish.calorie}}</div></div></div>
+              </div>
+            </div>
+            </div>
+            </div>
+
+            {% endfor %}
+            </form>
+            </form>
+            </div>
+
+            {% endfor %}
+            </div>
+
+        {% else %}
+    <p>No eatings are available.</p>
+{% endif %}
+</div>
+{% endblock %}

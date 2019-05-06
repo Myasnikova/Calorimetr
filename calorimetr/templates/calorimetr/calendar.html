@@ -1,0 +1,43 @@
+{% extends "calorimetr/base.html" %}
+{% load staticfiles %}
+{% block content_header %}Диетический календарь{% endblock %}
+{% block content_description %}отслеживайте потребление калорий в течение месяца{% endblock %}
+{% block content %}
+<form action="{% url 'calendar' %}" method="get">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="month_id" class="display-4" style ="font-size: 1.5rem">Месяц</label>
+    <select class="form-control" name="month" id="month_id">
+      <option selected hidden>{{current_month}}</option>
+      {% for month in month_list %}
+      <option>{{month}}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary border-0 mt-2 mb-2" name="submit" style ="background-color: #ff9400">Показать</button>
+  </div>
+</form>
+<div class="bg-white">
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Дата</th>
+      <th scope="col">Калории</th>
+      <th scope="col">%РСК</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key, value in eatings.items %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{key}}</td>
+      <td>{{value.0}}</td>
+      <td class="rsk">{{value.1}}</td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+{% endblock %}

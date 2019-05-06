@@ -1,0 +1,41 @@
+{% extends 'calorimetr/base.html' %}
+{% load staticfiles %}
+{% block link %}<script src="{% static 'calorimetr/js/jquery-3.2.1.min.js' %}"></script>{% endblock %}
+{% block content %}
+    <div class="row clearfix">
+        <div class="col-md-6 col-md-offset-3 column" style="">
+            <form action="" method="post" id="search-form" autocomplete="off">
+                {% csrf_token %}
+                <div class="input-group input-group-sm">
+                    <div class="tag-suggestion">
+                    {{ searchdish.q.errors }}
+                    {{ searchdish.q }}
+                    </div>
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-search" type="submit">search</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+    <div class="row clearfix">
+        <div class="col-md-12 column posts">
+            {% for dish in dishes %}
+              <p>{{dish.name}}</p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'calorimetr/js/typahead.js' %}"></script>
+    <script src="{% static 'calorimetr/js/search_dish.js' %}"></script>
+
+{% endblock %}
